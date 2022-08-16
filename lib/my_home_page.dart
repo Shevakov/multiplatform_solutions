@@ -2,10 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-
-import 'package:webview_flutter/webview_flutter.dart';
-
-import 'widgets/web_platform_webview.dart';
+import './widgets/mock_webview.dart'
+    if (dart.library.io) './widgets/non_web_platform_webview.dart'
+    if (dart.library.html) './widgets/web_platform_webview.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -17,7 +16,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late WebViewController _webViewController;
   final myController = TextEditingController();
   String cors = '';
   Stream<String>? fileStream;
@@ -31,10 +29,6 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response.statusCode == 200) {
         cors = response.headers['Access-Control-Allow-Origin'] ?? 'None';
         String jsonResponse = response.body;
-
-        if (!kIsWeb) {
-          _webViewController.loadHtmlString(jsonResponse);
-        }
 
         yield jsonResponse;
       }
@@ -87,14 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         Expanded(
                           flex: 8,
-                          child: kIsWeb
-                              ? WebPlatformWebView(snapshot.data)
-                              : WebView(
-                                  onWebViewCreated:
-                                      (WebViewController webViewController) {
-                                    _webViewController = webViewController;
-                                  },
-                                ),
+                          child: webView(myController.text),
                         ),
                       ]);
                     }

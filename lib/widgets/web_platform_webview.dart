@@ -1,21 +1,23 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+import 'dart:math';
 import 'dart:ui' as ui;
-import 'dart:html' as htmls;
 
 import 'package:flutter/widgets.dart';
 
+Widget webView(String link) => WebPlatformWebView(link);
+
 class WebPlatformWebView extends StatelessWidget {
-  final String html;
-  const WebPlatformWebView(this.html, {Key? key}) : super(key: key);
+  final String link;
+  const WebPlatformWebView(this.link, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // ignore: undefined_prefixed_name
-    htmls.ui.platformViewRegistry.registerViewFactory(
-        'test-view-type',
-        (int viewId) => htmls.IFrameElement()
-          ..querySelector('body')
-          ..innerHtml = html);
+    final id = Random().nextInt.toString();
 
-    return const HtmlElementView(viewType: 'test-view-type');
+    ui.platformViewRegistry
+        .registerViewFactory(id, (int viewId) => IFrameElement()..src = link);
+
+    return HtmlElementView(viewType: id);
   }
 }
