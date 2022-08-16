@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Александр bizkit",
+    "email": "limp-bizkit@mail.ru",
+    "id": 1
+  },
+  {
+    "name": "Артём monkeys",
+    "email": "arctic-monkeys@mail.ru",
+    "id": 2
+  },
+  {
+    "name": "Евгений killers",
+    "email": "the-killers@mail.ru",
+    "id": 3
+  },
+  {
+    "name": "Олег kasabian",
+    "email": "kasabian@mail.ru",
+    "id": 4
+  },
+  {
+    "name": "Василий peppers",
+    "email": "red-hot-chili-peppers@mail.ru",
+    "id": 5
+  },
+  {
+    "name": "Виталий pixies",
+    "email": "the-pixies@mail.ru",
+    "id": 6
+  },
+  {
+    "name": "Юля Heavy",
+    "email": "the-heavy@mail.ru",
+    "id": 7
+  },
+  {
+    "name": "Пётр Heavy",
+    "email": "the-heavy@mail.ru",
+    "id": 8
+  },
+  {
+    "name": "Глеб Heavy",
+    "email": "the-heavy@mail.ru",
+    "id": 9
+  }
+]
