@@ -15,30 +15,52 @@ class MyAdaptivePage extends StatefulWidget {
 }
 
 class _MyAdaptivePageState extends State<MyAdaptivePage> {
-  Future<String> fetchData() async {
-    String data = await fetchFileFromAssets("assets/persons.json");
+  Future<List<Person>>? personList$;
 
+  Future<List<Person>> fetchData() async {
+    String data = await fetchFileFromAssets("assets/persons.json");
+    List<Person> personList = [];
     final jsonResult = json.decode(data);
 
-    setState(() {
-      jsonResult.forEach((element) => personList.add(Person.fromMap(element)));
-    });
+    jsonResult.forEach((element) => personList.add(Person.fromMap(element)));
 
-    return "Success!";
+    return personList;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    personList$ = fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (personList.isEmpty) fetchData();
-
     return Scaffold(
-      body: LayoutBuilder(
-        builder: ((context, constraints) {
-          return constraints.maxWidth > 720
-              ? WideLayout(persons: personList)
-              : NarrowLayout(persons: personList);
-        }),
-      ),
+      body: FutureBuilder<List<Person>>(
+          future: personList$,
+          builder: (BuildContext buildContext, AsyncSnapshot snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return const Center(
+                  child: Text('None'),
+                );
+              case ConnectionState.waiting:
+                return const Center(child: CircularProgressIndicator());
+              case ConnectionState.done:
+                return LayoutBuilder(
+                  builder: ((context, constraints) {
+                    return constraints.maxWidth > 720
+                        ? WideLayout(persons: snapshot.data)
+                        : NarrowLayout(persons: snapshot.data);
+                  }),
+                );
+              default:
+                return const SingleChildScrollView(
+                  child: Text('Default'),
+                );
+            }
+          }),
     );
   }
 }

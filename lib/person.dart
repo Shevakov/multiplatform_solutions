@@ -8,5 +8,3 @@ class Person {
   Person.fromMap(Map<String, dynamic> json)
       : this(name: json['name'], email: json['email'], id: json['id']);
 }
-
-List<Person> personList = <Person>[];
